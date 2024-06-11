@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Container, VStack, Text, Button, HStack, Box, SimpleGrid } from "@chakra-ui/react";
 
 const jobs = [
@@ -27,8 +28,10 @@ const Index = () => {
         <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4} w="full">
           {filteredJobs.map(job => (
             <Box key={job.id} p={5} shadow="md" borderWidth="1px" borderRadius="md">
-              <Text fontSize="xl">{job.title}</Text>
-              <Text mt={2} color="gray.500">{job.category}</Text>
+              <Link to={`/job/${job.id}`}>
+                <Text fontSize="xl">{job.title}</Text>
+                <Text mt={2} color="gray.500">{job.category}</Text>
+              </Link>
             </Box>
           ))}
         </SimpleGrid>
