@@ -1,17 +1,18 @@
 import { Box, Text, Heading, VStack } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
-
-const jobs = [
-  { id: 1, title: "Frontend Developer", category: "Engineering", description: "Develop and maintain user interfaces." },
-  { id: 2, title: "Product Manager", category: "Product", description: "Oversee product development from start to finish." },
-  { id: 3, title: "UI/UX Designer", category: "Design", description: "Design user interfaces and experiences." },
-  { id: 4, title: "Backend Developer", category: "Engineering", description: "Develop and maintain server-side logic." },
-  { id: 5, title: "Product Designer", category: "Design", description: "Design products that meet user needs." },
-];
+import { useJob } from "../integrations/supabase/index.js";
 
 const JobDetails = () => {
   const { jobId } = useParams();
-  const job = jobs.find(job => job.id === parseInt(jobId));
+  const { data: job, isLoading, error } = useJob(jobId);
+
+  if (isLoading) {
+    return <Text>Loading...</Text>;
+  }
+
+  if (error) {
+    return <Text>Error loading job details</Text>;
+  }
 
   if (!job) {
     return <Text>Job not found</Text>;
@@ -20,9 +21,9 @@ const JobDetails = () => {
   return (
     <Box p={5}>
       <VStack spacing={4} align="start">
-        <Heading>{job.title}</Heading>
-        <Text fontSize="lg" color="gray.500">{job.category}</Text>
-        <Text>{job.description}</Text>
+        <Heading>{job.jobs_title}</Heading>
+        <Text fontSize="lg" color="gray.500">{job.job_area}</Text>
+        <Text>{job.job_type}</Text>
       </VStack>
     </Box>
   );
